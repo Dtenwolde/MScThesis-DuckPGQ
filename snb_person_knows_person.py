@@ -7,11 +7,11 @@ all_sf = ['sf0.1', 'sf1', 'sf3', 'sf10', 'sf30'] #
 fractions = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
 #%%
-for sf in all_sf:
+for sf in all_sf: 
     print(f"Starting {sf}")
     for fraction in fractions:
         print(f"Starting {fraction}")
-        df = pd.read_csv(f'/home/daniel/Documents/Programming/duckdb-pgq/data/csv/{sf}/Person_knows_Person.csv', delimiter='|')
+        df = pd.read_csv(f'/data/lsqb/data/social-network-{sf}-projected-fk/Person_knows_Person.csv', delimiter='|')
 
         df.rename(columns={':START_ID(Person)':'source',':END_ID(Person)':'target'}, inplace=True)
         running_sum = 0
