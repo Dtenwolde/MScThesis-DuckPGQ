@@ -1,6 +1,6 @@
 import duckdb
 
-all_sf = ['sf1', 'sf3', 'sf10', 'sf30', 'sf100', 'sf300']  #
+all_sf = ['sf1']  #  , 'sf3', 'sf10', 'sf30', 'sf100', 'sf300'
 fractions = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 for sf in all_sf:
     for fraction in fractions:

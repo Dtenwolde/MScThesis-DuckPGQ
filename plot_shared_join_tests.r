@@ -10,7 +10,7 @@ test_results$fraction[test_results$fraction == "1.csv"] <- as.character("1")
 
 by_frac_optimization <- test_results %>% group_by(fraction, optimization, sf) %>% summarise(avg_time = mean(time))
 
-plot <- ggplot(by_frac_optimization, aes(x=as.factor(fraction), # Main plot
+plot <- ggplot(by_frac_optimization, aes(x=fraction, # Main plot
                                 y = avg_time, 
                                 colour = as.factor(optimization), 
                                 group=as.factor(optimization))) +
@@ -22,6 +22,8 @@ plot <- ggplot(by_frac_optimization, aes(x=as.factor(fraction), # Main plot
        x = "Average number of connections",
        title="Comparison between the shared join optimization") +
   scale_colour_discrete(name = "Optimization", labels = c("Disabled", "Enabled")) +
+  scale_y_log10() +
+  scale_x_log10() +
   theme_classic() 
 plot
 

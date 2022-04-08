@@ -1,6 +1,7 @@
 import duckdb
 import pandas as pd
 
+print(duckdb.__version__)
 sf = 'sf0.1'
 
 filepath = '/home/daniel/Documents/Programming/duckdb-pgq'
