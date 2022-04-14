@@ -1,0 +1,84 @@
+{
+   "name":  "Query", 
+   "result": 1.354624,
+   "timing": 1.354624,
+   "cardinality": 0,
+   "extra-info": "SELECT p.id as source, p2.id as target, shortest_path(s.id, false, v_size, s.src, s.dst) as hops FROM src_dest s LEFT JOIN person p ON s.src = p.rowid LEFT JOIN person p2 ON s.dst = p2.rowid order by p.id, p2.id", 
+   "timings": [
+
+   ],
+   "children": [
+    {
+      "name": "ORDER_BY",
+      "timing":0.010242,
+      "cardinality":0,
+      "extra_info": "#0 ASC\n#1 ASC",
+      "timings": [
+      ],
+      "children": [
+       {
+         "name": "PROJECTION",
+         "timing":1.241788,
+         "cardinality":178330,
+         "extra_info": "source\ntarget\nhops\n",
+         "timings": [
+         ],
+         "children": [
+          {
+            "name": "HASH_JOIN",
+            "timing":0.006445,
+            "cardinality":178330,
+            "extra_info": "LEFT\ndst=rowid\n",
+            "timings": [
+            ],
+            "children": [
+             {
+               "name": "HASH_JOIN",
+               "timing":0.004814,
+               "cardinality":178330,
+               "extra_info": "LEFT\nsrc=rowid\n",
+               "timings": [
+               ],
+               "children": [
+                {
+                  "name": "SEQ_SCAN",
+                  "timing":0.004309,
+                  "cardinality":178330,
+                  "extra_info": "src_dest\n[INFOSEPARATOR]\nsrc\ndst\nid\nv_size",
+                  "timings": [
+                  ],
+                  "children": [
+                  ]
+                }
+,
+                {
+                  "name": "SEQ_SCAN",
+                  "timing":0.000011,
+                  "cardinality":1700,
+                  "extra_info": "person\n[INFOSEPARATOR]\n\nid",
+                  "timings": [
+                  ],
+                  "children": [
+                  ]
+                }
+               ]
+             }
+,
+             {
+               "name": "SEQ_SCAN",
+               "timing":0.000005,
+               "cardinality":1700,
+               "extra_info": "person\n[INFOSEPARATOR]\n\nid",
+               "timings": [
+               ],
+               "children": [
+               ]
+             }
+            ]
+          }
+         ]
+       }
+      ]
+    }
+   ]
+}
