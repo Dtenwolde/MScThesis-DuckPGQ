@@ -18,6 +18,7 @@ filepath = '/home/daniel/Documents/Programming/duckdb-pgq'
 filename = 'shortest_path.json'
 output_filename = 'shortest_path_test.csv'
 
+## Set to False when testing with neo4j since they do not allow duplicates.
 duplicates_allowed = True
 
 for sf in scale_factors:
