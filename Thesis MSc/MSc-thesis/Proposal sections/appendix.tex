@@ -1,0 +1,89 @@
+\section{SQL vs SQL/PGQ queries}\label{app:sqlvssqlpgq}
+
+
+% \begin{lstlisting}[caption=SQL/PGQ query, label=app:sqlpgqquery1] 
+% SELECT gt.cid, gt.name, gt.city, gt.amount
+% FROM GRAPH_TABLE ( aml,
+%     MATCH 
+%      ( c1 IS customer ) -[ IS owns ]->
+%      ( IS account ) -[ t1 IS transfers ]-> 
+%      ( IS account ) <-[ IS owns ]- ( c2 IS customer )
+%     WHERE c1.cid = 100 AND t1.amount > 10000
+%     COLUMNS ( c2.cid
+%               , c2.name 
+%               , c2.city 
+%               , t1.amount ) 
+%     ) gt
+% \end{lstlisting}
+
+\begin{lstlisting}[caption=SQL query WITH RECURSIVE, label=app:sqlquery1] 
+WITH RECURSIVE paths(startPerson, endPerson, path) AS (
+   SELECT -- define the path as the first edge of the traversal
+        person1id AS startPerson,
+        person2id AS endPerson,
+        [person1id, person2id]::bigint[] AS path
+     FROM knows
+   UNION ALL
+   SELECT -- concatenate new edge to the path
+        paths.startPerson AS startPerson,
+        person2id AS endPerson,
+        array_append(path, person2id) AS path
+     FROM paths
+     JOIN knows ON paths.endPerson = knows.person1id
+    WHERE knows.person2id != ALL(paths.path) -- detect cycles
+)
+SELECT startPerson, endPerson, path
+FROM paths
+WHERE startPerson = 1;
+\end{lstlisting}
+
+\begin{lstlisting}[caption=SQL/PGQ query transformed into SQL query, label=app:sqlpgqquery2] 
+select c1id, c2id, c3id 
+from GRAPH_TABLE (aml, 
+MATCH (c1 IS customer)-[IS transfers]->(c2 IS customer)-[t2 IS transfers]->(c3 IS customer)-[t3 IS transfers]->(c1) 
+COLUMNS (c1.cid AS c1id, c2.cid AS c2id, c3.cid AS c3id) gt
+
+/* The above SQL/PGQ query is transformed into the lower SQL query  */
+
+select c1id, c2id, c3id 
+from (SELECT c1.cid as c1id, c2.cid as c2id, c3.cid as c3id
+FROM customer c1, transfers t1, customer c2, transfers t2, customer c3, transfers t3
+WHERE c1.cid = t1.from_id
+    AND c2.cid = t1.to_id
+    AND c2.cid = t2.from_id
+    AND c3.cid = t2.to_id
+    AND t3.from_id = c3.cid 
+    AND t3.to_id = c1.cid
+)
+\end{lstlisting}
+
+\begin{lstlisting}[caption=SQL/PGQ query transformed into SQL query with Kleene star, label=app:sqlpgqquerykleene] 
+select gt.c1id, gt.c2id
+from GRAPH_TABLE (aml, MATCH (c1 IS CUSTOMER)-[t1 IS TRANSFERS*]->(c2 IS CUSTOMER) COLUMNS (c1.cid AS c1id, c2.cid AS c2id)) gt
+
+/* The above SQL/PGQ query with a Kleene star is transformed into the lower SQL query  */
+select c1id, c2id 
+FROM
+ (
+WITH cte1 AS (
+SELECT min(CREATE_CSR_EDGE(0, (SELECT count(c.cid) as vcount FROM Customer c), 
+CAST ((SELECT sum(CREATE_CSR_VERTEX(0, (SELECT count(c.cid) as vcount FROM Customer c), 
+sub.dense_id , sub.cnt )) as numEdges 
+FROM (
+    SELECT c.rowid as dense_id, count(t.from_id) as cnt
+    FROM Customer c  
+    LEFT JOIN  Transfers t ON t.from_id = c.cid
+    GROUP BY c.rowid
+) sub) AS BIGINT), 
+src.rowid, dst.rowid ) ) as temp, (SELECT count(c.cid) FROM Customer c) as vcount
+FROM 
+  Transfers t 
+  JOIN Customer src ON t.from_id = src.cid
+  JOIN Customer dst ON t.to_id = dst.cid
+)
+SELECT src.cid AS c1id, dst.cid AS c2id
+FROM cte1, Customer src, Customer dst 
+WHERE  
+( reachability(0, true, cte1.vcount, src.rowid, dst.rowid) = cte1.temp)
+);
+\end{lstlisting}

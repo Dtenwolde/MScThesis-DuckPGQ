@@ -1,0 +1,93 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: thesis-proposal.aux
+Reallocating 'name_of_file' (item size: 1) to 21 items.
+The style file: ACM-Reference-Format.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Database file #1: references.bib
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Warning--empty address in DBLP:conf/sigmod/AbadiMH08
+Warning--page numbers missing in both pages and numpages fields in DBLP:journals/corr/abs-2001-02299
+Warning--empty address in DBLP:conf/sigmod/AnglesABBFGLPPS18
+Warning--page numbers missing in both pages and numpages fields in DBLP:journals/corr/abs-1910-09017
+Warning--empty address in DBLP:conf/cidr/BonczZN05
+Warning--empty address in DBLP:conf/sigmod/BorneaDKSDUB13
+Warning--page numbers missing in both pages and numpages fields in Deutsch2021
+Warning--empty publisher in Fan2015TheCA
+Warning--empty address in Fan2015TheCA
+Warning--page numbers missing in both pages and numpages fields in Fan2015TheCA
+Warning--no number and no volume in Francis2018
+Warning--page numbers missing in both pages and numpages fields in Francis2018
+Warning--empty address in DBLP:books/daglib/0020812
+Warning--empty publisher in graindb
+Warning--empty address in graindb
+Warning--page numbers missing in both pages and numpages fields in graindb
+Warning--empty year in isogql
+Warning--empty year in isosqlpgq
+Warning--empty booktitle in Melton2002Sql1U
+Warning--empty publisher in Melton2002Sql1U
+Warning--empty address in Melton2002Sql1U
+Warning--page numbers missing in both pages and numpages fields in Melton2002Sql1U
+Warning--empty address in DBLP:conf/sigmod/MhedhbiLKWS21
+Warning--empty publisher in DBLP:journals/pvldb/Ozsu19
+Warning--empty address in DBLP:journals/pvldb/Ozsu19
+Warning--page numbers missing in both pages and numpages fields in DBLP:journals/pvldb/Ozsu19
+Warning--empty address in DBLP:conf/sigmod/RaasveldtM19
+Warning--empty address in neo4jgraphbook
+Warning--empty address in benkler2008collective
+Warning--no journal in Neo4j2018
+Warning--no number and no volume in Neo4j2018
+Warning--page numbers missing in both pages and numpages fields in Neo4j2018
+Warning--empty address in DBLP:conf/grades/SteerALCVV17
+Warning--empty address in DBLP:conf/sigmod/SunFSKHX15
+Warning--empty address in DBLP:conf/sigmod/TianXZPTSKAP20
+Warning--empty address in DBLP:conf/grades/Xirogiannopoulos17
+You've used 58 entries,
+            5959 wiz_defined-function locations,
+            1718 strings with 29805 characters,
+and the built_in function-call counts, 67813 in all, are:
+= -- 7929
+> -- 3292
+< -- 1
++ -- 1106
+- -- 1140
+* -- 5356
+:= -- 7611
+add.period$ -- 310
+call.type$ -- 58
+change.case$ -- 472
+chr.to.int$ -- 56
+cite$ -- 94
+duplicate$ -- 5450
+empty$ -- 3845
+format.name$ -- 1299
+if$ -- 15512
+int.to.chr$ -- 4
+int.to.str$ -- 1
+missing$ -- 151
+newline$ -- 631
+num.names$ -- 480
+pop$ -- 1981
+preamble$ -- 1
+purify$ -- 978
+quote$ -- 0
+skip$ -- 1974
+stack$ -- 0
+substring$ -- 4511
+swap$ -- 521
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 1431
+warning$ -- 36
+while$ -- 416
+width$ -- 0
+write$ -- 1165
+(There were 36 warnings)
