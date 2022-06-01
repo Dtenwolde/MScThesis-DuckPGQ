@@ -2,7 +2,7 @@
 %%% Do NOT edit. File created by BibTeX with style
 %%% ACM-Reference-Format-Journals [18-Jan-2012].
 
-\begin{thebibliography}{58}
+\begin{thebibliography}{61}
 
 %%% ====================================================================
 %%% NOTE TO THE USER: you can override these defaults by providing
@@ -265,6 +265,42 @@
 \urldef\tempurl%
 \url{https://doi.org/10.1145/2463676.2463718}
 \showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Council}{Council}{2022a}]%
+        {snb-bi-15}
+\bibfield{author}{\bibinfo{person}{Linked Data~Benchmark Council}.}
+  \bibinfo{year}{2022}\natexlab{a}.
+\newblock \bibinfo{title}{LDBC SNB BI read 15}.
+\newblock
+  \bibinfo{howpublished}{\url{https://ldbcouncil.org/ldbc_snb_docs/bi-read-15.pdf}}.
+\newblock
+\newblock
+\shownote{Accessed: 13/06/2022.}
+
+
+\bibitem[\protect\citeauthoryear{Council}{Council}{2022b}]%
+        {snb-bi-19}
+\bibfield{author}{\bibinfo{person}{Linked Data~Benchmark Council}.}
+  \bibinfo{year}{2022}\natexlab{b}.
+\newblock \bibinfo{title}{LDBC SNB BI read 19}.
+\newblock
+  \bibinfo{howpublished}{\url{https://ldbcouncil.org/ldbc_snb_docs/bi-read-19.pdf}}.
+\newblock
+\newblock
+\shownote{Accessed: 13/06/2022.}
+
+
+\bibitem[\protect\citeauthoryear{Council}{Council}{2022c}]%
+        {snb-bi-20}
+\bibfield{author}{\bibinfo{person}{Linked Data~Benchmark Council}.}
+  \bibinfo{year}{2022}\natexlab{c}.
+\newblock \bibinfo{title}{LDBC SNB BI read 20}.
+\newblock
+  \bibinfo{howpublished}{\url{https://ldbcouncil.org/ldbc_snb_docs/bi-read-20.pdf}}.
+\newblock
+\newblock
+\shownote{Accessed: 13/06/2022.}
 
 
 \bibitem[\protect\citeauthoryear{Deutsch, Francis, Green, Hare, Li, Libkin,

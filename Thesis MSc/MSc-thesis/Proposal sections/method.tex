@@ -7,7 +7,7 @@ Often, graphs have the small-world property, the distance between any two nodes 
 In addition, the shortest distance is always smaller than or equal to the diameter, the greatest distance between any two nodes, of the graph.
 Therefore, in unweighted graphs, the size of the values needed to be stored in memory can also be relatively small. 
 For every source node for which the shortest distance is computed, it will likely be enough to store the distance within 8 bits. 
-Since the distance can never be negative, an unsigned 8-bit integer would often suffice, in the case that the diameter of the graph is less than 255. 
+Since the distance can never be negative, an unsigned 8-bit integer would suffice, in the case that the diameter of the graph is less than 255. 
 However, we should care not to exceed this limit as the integer will overflow, causing it to wrap around to 0. 
 Whenever that would happen we should copy the values into 16-bit or 32-bit unsigned integers to ensure no overflow errors occur.
 This does reduce the efficiency of the MS-BFS algorithm compared to the reachability implementation. 
@@ -24,10 +24,11 @@ They find that the performance of the Bellman-Ford algorithm is 3-10x higher com
 Therefore, we will first look to implement the batched Bellman-Ford algorithm proposed by Then et al. as shown in Algorithm~\ref{alg:batched-bellman-ford}. 
 Implementing a batched version of Dijkstra's algorithm will be more complex.
 During the batched version multiple instances of Dijkstra's algorithm will run, each having its Fibonacci heap.
-Given that each heap will be of a different structure, the effectiveness of SIMD instructions will be reduced. 
+Given that each heap will be of a different structure, the effectiveness of possible SIMD instructions will be reduced. 
 Therefore, it is not likely that a batched version of Dijkstra's algorithm will outperform the batched version of the Bellman-Ford algorithm. 
 To test the performance of the implementations we will be using the LDBC Graphalytics benchmark~\cite{DBLP:journals/pvldb/IosupHNHPMCCSAT16}, which is designed to test various algorithms such as single-source shortest path (SSSP) and BFS.
 Additionally, we will be using the LDBC Social Network Benchmark~\cite{DBLP:journals/corr/abs-2001-02299} to further test the performance of the implementations.
+
 
 \subsection{Shared hash join}
 Queries can contain multiple expensive joins which are in essence identical. This also happens in graph-like queries, where it is common to join the vertex table twice on the edge table. Once for the source of the edge, and once for the destination of the edge. 

@@ -49,45 +49,45 @@ Warning--empty address in DBLP:conf/grades/SteerALCVV17
 Warning--empty address in DBLP:conf/sigmod/SunFSKHX15
 Warning--empty address in DBLP:conf/sigmod/TianXZPTSKAP20
 Warning--empty address in DBLP:conf/grades/Xirogiannopoulos17
-You've used 58 entries,
+You've used 61 entries,
             5959 wiz_defined-function locations,
-            1718 strings with 29805 characters,
-and the built_in function-call counts, 67813 in all, are:
-= -- 7929
-> -- 3292
+            1729 strings with 30109 characters,
+and the built_in function-call counts, 69961 in all, are:
+= -- 8173
+> -- 3348
 < -- 1
-+ -- 1106
-- -- 1140
-* -- 5356
-:= -- 7611
-add.period$ -- 310
-call.type$ -- 58
-change.case$ -- 472
-chr.to.int$ -- 56
-cite$ -- 94
-duplicate$ -- 5450
-empty$ -- 3845
-format.name$ -- 1299
-if$ -- 15512
-int.to.chr$ -- 4
++ -- 1123
+- -- 1162
+* -- 5478
+:= -- 7861
+add.period$ -- 328
+call.type$ -- 61
+change.case$ -- 487
+chr.to.int$ -- 57
+cite$ -- 97
+duplicate$ -- 5655
+empty$ -- 3993
+format.name$ -- 1321
+if$ -- 15974
+int.to.chr$ -- 6
 int.to.str$ -- 1
 missing$ -- 151
-newline$ -- 631
-num.names$ -- 480
-pop$ -- 1981
+newline$ -- 661
+num.names$ -- 502
+pop$ -- 2038
 preamble$ -- 1
-purify$ -- 978
+purify$ -- 1016
 quote$ -- 0
-skip$ -- 1974
+skip$ -- 2050
 stack$ -- 0
-substring$ -- 4511
-swap$ -- 521
+substring$ -- 4674
+swap$ -- 536
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 1431
+type$ -- 1509
 warning$ -- 36
-while$ -- 416
+while$ -- 438
 width$ -- 0
-write$ -- 1165
+write$ -- 1222
 (There were 36 warnings)

@@ -1,7 +1,7 @@
 library(ggplot2)
 library(dplyr)
 
-setwd('/home/daniel/PycharmProjects/MScThesisScripts')
+setwd('~/PycharmProjects/MScThesisScripts')
 
 test_results <- read.csv('test_results_optimization_with_connections_remote.csv', header = TRUE, stringsAsFactors = FALSE)
 names(test_results) <- c('time', 'optimization', 'sf', 'fraction')

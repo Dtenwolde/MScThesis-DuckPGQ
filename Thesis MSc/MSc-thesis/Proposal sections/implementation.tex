@@ -1,0 +1,29 @@
+\section{Implementation}
+
+\subsection{Shared hash join}
+The initial idea was to detect the duplicate joins in the optimizer. 
+This can be done by adding an additional rule to the optimizer which scans for duplicate joins. 
+In the optimizer, the logical plan tree would be traversed. 
+Whenever a join is detected, the name of the table on which the join is performed is saved in the \textit{client context}. 
+The client context can be used to save variables to be used later in later phases during the query execution. 
+The client context stays the same between queries, thus it is important to clean up whatever necessary of the client context at the end of every query. 
+In case an identical table is detected multiple times in various joins in the same query, thus implying an identical join, we would replace the later encountered join with a special \textit{SHARED HASH JOIN} logical node. 
+This node would reference the left hand side table name of the original join, and a single child that represents the right hand side table used for the source. 
+
+There are a number of challenges with this approach. 
+First of all, using only the name of the left hand side table to detect duplicate joins would not be sufficient. 
+Multiple joins on the same table can exist that make use of different columns. 
+These would then result in non-duplicate hash tables, which can therefore not be reused by each other. Thus it is important to also look at the conditions of the joins. 
+
+Assuming the duplicate join can be detected, a special logical node would have then replaced this join. However, this requires the introduction of a new logical node, and a new physical operator for the physical planner stage. This new physical operator would then have created its own pipeline. This would have created additional work that could be saved by using another approach that was ultimately chosen as the best suited option.
+
+Instead of detecting the duplicate joins in the optimizer, they are detected during the pipeline creation. At this point, the physical plan has been created, and is being converted into pipelines as explained previously \todo{Insert ref to section here}. 
+When the physical operator \textit{HASH JOIN} is detected, we save the corresponding pipeline and the \textit{HASH JOIN} operator are saved in a dictionary inside the \textit{Executor}, alongside all other pipelines. Then, whenever an additional \textit{HASH JOIN} is detected, we check if this join is duplicate to those seen earlier. This is done by comparing the join type (INNER, OUTER, ANTI\todo{check}), the number of conditions, and ultimately if the right hand side of every condition is equal to the earlier detected join. 
+
+
+
+
+
+
+\subsection{Perfect join}
+In some cases it is possible to perform a \textit{perfect join}. In DuckDB this is done when the table on which the hash table is built contains less than one million rows. In addition, there should not be too many conditions. Furthermore, it can only occur on an \textit{INNER} or \textit{LEFT} join. 
