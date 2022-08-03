@@ -11,6 +11,10 @@ This includes implementations of:
 * [Batched Bellman-Ford](https://github.com/cwida/duckdb-pgq.old/blob/path_length/extension/sqlpgq/sqlpgq_functions/sqlpgq_cheapest_path.cpp) used for cheapest path.
 * [Weighted or unweighted CSR creation](https://github.com/cwida/duckdb-pgq.old/blob/path_length/extension/sqlpgq/sqlpgq_functions/sqlpgq_csr_creation.cpp) used to create a CSR data structure.
 
+## [LDBC SNB benchmark](https://github.com/ldbc/ldbc_snb_bi/tree/duckdb-pgq-experiments)
+This repository contains the LDBC queries that have been benchmarked using the DuckPGQ implementations. See instructions [here]()
+
+
 ## [Vectorised batched Bellman-Ford microbenchmark](https://github.com/Dtenwolde/SIMD-Batched-Bellman-Ford)
 This repository contains a microbenchmark conducted to test the speedup achieved when using vectorised instructions compared to scalar instructions for the batched Bellman-Ford algorithm. 
 
