@@ -12,11 +12,10 @@ This includes implementations of:
 * [Weighted or unweighted CSR creation](https://github.com/cwida/duckdb-pgq.old/blob/path_length/extension/sqlpgq/sqlpgq_functions/sqlpgq_csr_creation.cpp) used to create a CSR data structure.
 
 ## [LDBC SNB benchmark](https://github.com/ldbc/ldbc_snb_bi/tree/duckdb-pgq-experiments)
-This repository contains the LDBC queries that have been benchmarked using the DuckPGQ implementations. See instructions [here]()
-
+This repository contains the LDBC queries that have been benchmarked using the DuckPGQ implementations. See instructions [here](https://github.com/ldbc/ldbc_snb_bi/tree/duckdb-pgq-experiments/duckdb#readme)
 
 ## [Vectorised batched Bellman-Ford microbenchmark](https://github.com/Dtenwolde/SIMD-Batched-Bellman-Ford)
-This repository contains a microbenchmark conducted to test the speedup achieved when using vectorised instructions compared to scalar instructions for the batched Bellman-Ford algorithm. 
+This repository contains a microbenchmark conducted to test the speedup achieved when using vectorised instructions compared to scalar instructions for the batched Bellman-Ford algorithm. See instructions [here](https://github.com/Dtenwolde/SIMD-Batched-Bellman-Ford#readme)
 
 ## [Shared hash join optimisation](https://github.com/diegomestre2/duckdb/tree/shared_hash_join)
 This repository contains an optimisation that is able to share the hash table created between joins that use the same hash table. 
