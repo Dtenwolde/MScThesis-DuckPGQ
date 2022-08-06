@@ -1,16 +1,19 @@
 library(ggplot2)
 library(dplyr)
 
-setwd('~/PycharmProjects/MScThesisScripts')
+# setwd('/home/daniel/git/MScThesis-DuckPGQ')
 
-test_results <- read.csv('test_results_optimization_with_connections_remote.csv', header = TRUE, stringsAsFactors = FALSE)
-names(test_results) <- c('time', 'optimization', 'sf', 'fraction')
+test_results <- read.csv('/home/daniel/git/MScThesis-DuckPGQ/Scripts/test_results_optimization_with_connections.csv', header = TRUE, stringsAsFactors = FALSE)
+names(test_results) <- c('time', 'optimization', 'sf', 'fraction', 'num_connections')
 
-test_results$fraction[test_results$fraction == "1.csv"] <- as.character("1")
+# test_results$fraction[test_results$fraction == "1.csv"] <- as.character("1")
+test_results$fraction <- as.factor(test_results$fraction)
+test_results$sf <- as.factor(test_results$sf)
+test_results$num_connections <- as.factor(test_results$num_connections)
 
-by_frac_optimization <- test_results %>% group_by(fraction, optimization, sf) %>% summarise(avg_time = mean(time))
+by_frac_optimization <- test_results %>% group_by(num_connections, optimization, sf) %>% summarise(avg_time = mean(time))
 
-plot <- ggplot(by_frac_optimization, aes(x=fraction, # Main plot
+plot <- ggplot(by_frac_optimization, aes(x=num_connections, # Main plot
                                 y = avg_time, 
                                 colour = as.factor(optimization), 
                                 group=as.factor(optimization))) +
@@ -23,7 +26,6 @@ plot <- ggplot(by_frac_optimization, aes(x=fraction, # Main plot
        title="Comparison between the shared join optimization") +
   scale_colour_discrete(name = "Optimization", labels = c("Disabled", "Enabled")) +
   scale_y_log10() +
-  scale_x_log10() +
   theme_classic() 
 plot
 

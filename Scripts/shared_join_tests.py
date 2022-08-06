@@ -6,6 +6,33 @@ import os
 
 output_filename = 'test_results_optimization_with_connections.csv'
 
+def load_entities_csv(con, data_dir: str):
+    dynamic_path = f"{data_dir}/initial_snapshot/dynamic"
+    dynamic_entities = ["Person"]
+
+    con.execute("CREATE TABLE Person (     creationDate timestamp NOT NULL,     "
+                "id bigint PRIMARY KEY, "
+                "firstName varchar(40) NOT NULL, "
+                "lastName varchar(40) NOT NULL, "
+                "gender varchar(40) NOT NULL, "
+                "birthday date NOT NULL,  "
+                "locationIP varchar(40) NOT NULL,"
+                "browserUsed varchar(40) NOT NULL, "
+                "LocationCityId bigint NOT NULL,  "
+                "speaks varchar(640) NOT NULL, "
+                "email varchar(8192) NOT NULL)")
+
+
+
+    for entity in dynamic_entities:
+        for csv_file in [f for f in os.listdir(f"{dynamic_path}/{entity}") if
+                         f.startswith("part-") and (f.endswith(".csv") or f.endswith(".csv.gz"))]:
+            csv_path = f"{dynamic_path}/{entity}/{csv_file}"
+            con.execute(
+                f"COPY {entity} FROM '{csv_path}' (DELIMITER '|', HEADER, FORMAT csv)")
+            if entity == "Person_knows_Person":
+                con.execute(
+                    f"COPY {entity} (creationDate, Person2id, Person1id) FROM '{csv_path}' (DELIMITER '|', HEADER, FORMAT csv)")
 
 def find_csv_filenames(path_to_dir, suffix=".csv"):
     filenames = os.listdir(path_to_dir)
@@ -15,27 +42,24 @@ def find_csv_filenames(path_to_dir, suffix=".csv"):
 def execute_query_test(sf, fraction, optimization, num_connections):
     filename = f'query_profiler{str(sf)}f{str(fraction)}o{str(optimization)}.json'
     con = duckdb.connect(database=':memory:')
-    con.execute('CREATE TABLE person (id bigint);')
-    con.execute('CREATE TABLE knows (source bigint, target bigint);')
+
+    load_entities_csv(con, f"/home/daniel/Documents/ldbc_snb_datagen_spark/out-{sf}/graphs/csv/bi/composite-merged-fk")
+
+    con.execute("CREATE TABLE Person_knows_Person (    "
+                "creationDate timestamp NOT NULL, "
+                "source bigint NOT NULL,    "
+                "target bigint NOT NULL)")
     con.execute(
-        f"copy knows from '/home/daniel/PycharmProjects/MScThesis-Scripts/input_files/person_knows_person_trimmed_{sf}_{fraction}_{num_connections}.csv' (HEADER, DELIMITER ',');")
-    con.execute('insert into knows select target, source from knows;')
-    con.execute(f"copy person from '/home/daniel/Documents/Programming/duckdb-pgq/data/csv/{sf}/Person.csv' (HEADER);")
+        f"copy Person_knows_Person from 'input_files/person_knows_person_trimmed_{sf}_{fraction}_{num_connections}.csv' (HEADER, DELIMITER ',');")
+    con.execute('insert into Person_knows_Person select creationdate, target, source from Person_knows_Person;')
+
     con.execute('PRAGMA enable_profiling=json;')
     con.execute(f"PRAGMA profiling_output='{filename}';")
     if optimization:
         con.execute('PRAGMA enable_shared_hash_join;')
-    con.execute("SELECT min(CREATE_CSR_EDGE(0, (SELECT count(p.id) as vcount FROM person p), "
-                "CAST ((SELECT sum(CREATE_CSR_VERTEX(0, (SELECT count(p.id) as vcount FROM person p), "
-                "sub.dense_id , sub.cnt )) AS numEdges "
-                "FROM ("
-                "  SELECT p.rowid as dense_id, count(k.source) as cnt "
-                "FROM person p "
-                "LEFT JOIN  knows k ON k.source = p.id "
-                "GROUP BY p.rowid "
-                ") sub) AS BIGINT), "
-                "src.rowid, dst.rowid )) "
-                "FROM   knows k "
+    else:
+        con.execute('PRAGMA disable_shared_hash_join;')
+    con.execute("select * FROM person_knows_person k "
                 "JOIN person src ON k.source = src.id "
                 "JOIN person dst ON k.target = dst.id; ")
     con.close()
@@ -56,12 +80,13 @@ def execute_query_test(sf, fraction, optimization, num_connections):
 
 
 def main():
-    for _ in range(100):
-        filenames = find_csv_filenames("/home/daniel/PycharmProjects/MScThesis-Scripts/input_files")
-        for file in filenames:
-            file_split = file.split("_")
-            sf = file_split[-3]
-            fraction = file_split[-2]
+    filenames = find_csv_filenames("input_files")
+    for file in filenames:
+        file_split = file.split("_")
+        sf = file_split[-3]
+        fraction = file_split[-2]
+        print(sf, fraction)
+        for _ in range(100):
             num_connections = file_split[-1].split(".")[0]
             execute_query_test(sf, fraction, True, num_connections)
             execute_query_test(sf, fraction, False, num_connections)
