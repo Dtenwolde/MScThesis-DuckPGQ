@@ -78,7 +78,7 @@ def execute_query_test(sf, fraction, optimization, num_connections):
     # df = pd.DataFrame({'time': query_total_time, 'optimization': optimization, 'sf': sf, 'fraction': fraction,
     #                    'num_connections': num_connections},
     #                   index=[0])
-    df = pd.DataFrame({'sf': sf, 'fraction': fraction, 'ratio': int(num_knows / num_person)})
+    df = pd.DataFrame({'sf': sf, 'fraction': fraction, 'ratio': int(num_knows / num_person)}, index=[0])
     if not os.path.isfile(tmp_output):
         df.to_csv(tmp_output, header=True, index=False)
     else:  # else it exists so append without writing the header
@@ -105,7 +105,7 @@ def main():
         if sf == "sf10":
             num_connections = file_split[-1].split(".")[0]
             execute_query_test(sf, fraction, True, num_connections)
-            execute_query_test(sf, fraction, False, num_connections)
+            # execute_query_test(sf, fraction, False, num_connections)
 
 
 if __name__ == "__main__":
