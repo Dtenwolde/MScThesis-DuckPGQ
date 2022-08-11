@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 output_filename = 'test_results_optimization_with_connections.csv'
-
+tmp_output = 'num_fraction.csv'
 def load_entities_csv(con, data_dir: str):
     dynamic_path = f"{data_dir}/initial_snapshot/dynamic"
     dynamic_entities = ["Person"]
@@ -53,40 +53,56 @@ def execute_query_test(sf, fraction, optimization, num_connections):
         f"copy Person_knows_Person from 'input_files/person_knows_person_trimmed_{sf}_{fraction}_{num_connections}.csv' (HEADER, DELIMITER ',');")
     con.execute('insert into Person_knows_Person select creationdate, target, source from Person_knows_Person;')
 
-    con.execute('PRAGMA enable_profiling=json;')
-    con.execute(f"PRAGMA profiling_output='{filename}';")
-    if optimization:
-        con.execute('PRAGMA enable_shared_hash_join;')
-    else:
-        con.execute('PRAGMA disable_shared_hash_join;')
-    con.execute("select * FROM person_knows_person k "
-                "JOIN person src ON k.source = src.id "
-                "JOIN person dst ON k.target = dst.id; ")
-    con.close()
 
-    f = open(filename)
-    query_output = json.load(f)
-    f.close()
-    os.remove(filename)
-
-    query_total_time = query_output['timing']
-    df = pd.DataFrame({'time': query_total_time, 'optimization': optimization, 'sf': sf, 'fraction': fraction,
-                       'num_connections': num_connections},
-                      index=[0])
-    if not os.path.isfile(output_filename):
-        df.to_csv(output_filename, header=True, index=False)
+    num_person = con.execute("select count(*) from person").fetchone()[0]
+    num_knows = con.execute("select count(*) from person_knows_person").fetchone()[0]
+    print(num_person, num_knows, int(num_knows / num_person))
+    # con.execute('PRAGMA enable_profiling=json;')
+    # con.execute(f"PRAGMA profiling_output='{filename}';")
+    # if optimization:
+    #     con.execute('PRAGMA enable_shared_hash_join;')
+    # else:
+    #     con.execute('PRAGMA disable_shared_hash_join;')
+    # result = con.execute("select count(*) FROM person_knows_person k "
+    #             "JOIN person src ON k.source = src.id "
+    #             "JOIN person dst ON k.target = dst.id; ").fetchall()
+    # # print(fraction, result)
+    # con.close()
+    #
+    # f = open(filename)
+    # query_output = json.load(f)
+    # f.close()
+    # # os.remove(filename)
+    #
+    # query_total_time = query_output['timing']
+    # df = pd.DataFrame({'time': query_total_time, 'optimization': optimization, 'sf': sf, 'fraction': fraction,
+    #                    'num_connections': num_connections},
+    #                   index=[0])
+    df = pd.DataFrame({'sf': sf, 'fraction': fraction, 'ratio': int(num_knows / num_person)})
+    if not os.path.isfile(tmp_output):
+        df.to_csv(tmp_output, header=True, index=False)
     else:  # else it exists so append without writing the header
-        df.to_csv(output_filename, mode='a', header=False, index=False)
+        df.to_csv(tmp_output, mode='a', header=False, index=False)
 
 
 def main():
     filenames = find_csv_filenames("input_files")
+    # for file in filenames:
+    # file_split = filenames[0].split("_")
+    # sf = file_split[-3]
+    # fraction = file_split[-2]
+    # print(sf, fraction)
+    #
+    #     num_connections = file_split[-1].split(".")[0]
+    #     execute_query_test(sf, fraction, True, num_connections)
+    #     execute_query_test(sf, fraction, False, num_connections)
     for file in filenames:
         file_split = file.split("_")
         sf = file_split[-3]
         fraction = file_split[-2]
-        print(sf, fraction)
-        for _ in range(100):
+        # print(sf, fraction)
+        # for _ in range(100):
+        if sf == "sf10":
             num_connections = file_split[-1].split(".")[0]
             execute_query_test(sf, fraction, True, num_connections)
             execute_query_test(sf, fraction, False, num_connections)
