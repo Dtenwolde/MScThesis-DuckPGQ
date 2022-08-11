@@ -102,9 +102,8 @@ def main():
         fraction = file_split[-2]
         # print(sf, fraction)
         # for _ in range(100):
-        if sf == "sf10":
-            num_connections = file_split[-1].split(".")[0]
-            execute_query_test(sf, fraction, True, num_connections)
+        num_connections = file_split[-1].split(".")[0]
+        execute_query_test(sf, fraction, True, num_connections)
             # execute_query_test(sf, fraction, False, num_connections)
 
 
